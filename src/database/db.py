@@ -13,7 +13,6 @@ class Db:
 
         # create a cursor
         cur = conn.cursor()
-        print('Connecting to the PostgreSQL database')
 
 
 if __name__ == '__main__':

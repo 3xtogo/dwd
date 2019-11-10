@@ -1,0 +1,11 @@
+Allgemeines
+
+#Bildschirm umdrehen
+in boot.txt Zeile hinzufügen:
+lcd_rotation=2
+
+#Filezilla und Putty
+FTP um Python-Dateien auf den rpi zu kopieren 
+benötigt dazu eine SSH-Verbindung (Putty)
+beide müssen sich dafür im selben Netzwerk befinden
+// alternativ usb-stick ... 
