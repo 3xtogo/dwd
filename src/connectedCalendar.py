@@ -3,20 +3,33 @@ import urllib.parse
 from ics import Calendar, Event
 
 
-# using ics
-# https://icspy.readthedocs.io/en/stable/
+class ConnectedCalenar:
+    reference = 'https://icspy.readthedocs.io/en/stable/'
 
-class myCalendar:
     def __init__(self, url):
         """
 
-        :param kwargs: url
+        :param url: url to ics
         """
         self.calendar = Calendar()
         self.url = url
 
+        self.fetch()
+
+    def fetch(self):
+        self.calendar = Calendar(self.fetchIcsFromWeb(self.url))
+
+    def eventsList(self):
+        for ev in self.calendar.events:
+            print(ev.begin, ev.end, '\n\t', ev.name, '\n\t', ev.location, '\n')
+
     @staticmethod
     def fetchIcsFromWeb(url):
+        """
+
+        :param url: download ics
+        :return: string ics
+        """
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req) as response:
             the_page = response.read()
@@ -24,13 +37,7 @@ class myCalendar:
         return icalStr
 
 
-
-
-
-
-
 if __name__ == '__main__':
-
     myUrl = 'https://studip.hs-rm.de/dispatch.php/ical/index/qz8Lhst2'
-    myCalendar(myUrl)
-    1
+    myCal = ConnectedCalenar(myUrl)
+    myCal.eventsList()
