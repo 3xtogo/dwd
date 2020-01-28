@@ -27,7 +27,7 @@ FrameS = tk.Frame(root,width = 266, height = 100, bg = "green").grid(row = 2,col
 FrameSW = tk.Frame(root,width = 267, height = 100, bg = "blue").grid(row = 2,column = 2)
 
 #HSRM LOGO # ROW 0
-image = tk.PhotoImage(file="Logo_kompakt.png")
+image = tk.PhotoImage(file=r"C:\dwd\src\assets\Logo_kompakt.png")
 disp = image.subsample(10,10)
 tk.Label(FrameN,image=disp,bg="white").grid(columnspan = 3, row = 0, column = 0) #Top middle
 
