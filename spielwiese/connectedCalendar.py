@@ -1,6 +1,6 @@
 import urllib.request
 import urllib.parse
-from ics import Calendar, Event
+from ics import Calendar  # , Event
 
 
 class ConnectedCalenar:
@@ -20,8 +20,11 @@ class ConnectedCalenar:
         self.calendar = Calendar(self.fetchIcsFromWeb(self.url))
 
     def eventsList(self):
+        ls = []
         for ev in self.calendar.events:
             print(ev.begin, ev.end, '\n\t', ev.name, '\n\t', ev.location, '\n')
+            ls.append({'begin': ev.begin, 'end': ev.end, 'name': ev.name, 'loc': ev.location})
+        return ls
 
     @staticmethod
     def fetchIcsFromWeb(url):
