@@ -1,8 +1,8 @@
 import tkinter as tk
 from src.helper.functions import timeStamp
-from src.database.db import Db
+#from src.database.db import Db
 
-db = Db()
+#db = Db()
 
 
 class Window:
@@ -67,9 +67,9 @@ class Window:
                                            column=2)
 
         # HSRM LOGO # ROW 0
-        assetsDir = r"C:\dwd\src\assets\\"
+        photoDir = r"assets/Logo_kompakt.png"
 
-        image = tk.PhotoImage(file=assetsDir + "Logo_kompakt.png")
+        image = tk.PhotoImage(file=photoDir)
 
         disp = image.subsample(10, 10)
 
