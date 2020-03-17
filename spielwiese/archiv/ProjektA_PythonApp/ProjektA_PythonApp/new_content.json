@@ -1,0 +1,28 @@
+{
+  "content": {
+    "buttons": {
+      "home": {
+        "id": "home",
+        "image": "houseImage.png"
+      },
+      "calendar": {
+        "id": "calendar",
+        "image": "calendarImage.png"
+      },
+      "news": {
+        "id": "news",
+        "image": "newsImage.png"
+      }
+    },
+    "headlabel": {
+      "labeltext": "Fachbereich ING ",
+      "font": "default",
+      "size": 10
+    },
+    "room": {
+      "font": "default",
+      "labeltext": " A420 ",
+      "size": 20
+    }
+  }
+}
