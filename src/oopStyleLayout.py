@@ -1,8 +1,35 @@
 import tkinter as tk
 from src.helper.functions import timeStamp
-#from src.database.db import Db
+import sqlite3
 
-#db = Db()
+
+# from src.database.db import Db
+
+# db = Db()
+
+
+def setupLocalDatabase():
+    # the database is already present fetch here maybe?
+
+    localDbPath = r".\database\localApplicationDatabase.db"
+    connection = sqlite3.connect(localDbPath)
+    print('connected to', localDbPath)
+
+    cursor = connection.cursor()
+
+    # delete all tables
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+    tables = [tablePair[0] for tablePair in tables]
+
+    print(tables)
+
+    for table in tables:
+        cursor.execute("SELECT * FROM {}".format(table))
+        print('table:', table, cursor.fetchall())
+
+    print('X')
+    pass
 
 
 class Window:
@@ -110,7 +137,7 @@ class Window:
                                bg="red",
                                text="App beenden",
                                command=self.buttenEndPress).place(x=0,
-                                                                y=0)  # REMOVE LATER
+                                                                  y=0)  # REMOVE LATER
 
         # run main
         self.root.mainloop()  # buttons active
@@ -132,12 +159,13 @@ class Window:
         Window.MainWindowText.set("h3110 w0r1D")
         print(timeStamp(), "h3110 w0r1D")
 
-
-
     def buttenEndPress(self):
         self.root.destroy()
 
+
 if __name__ == '__main__':
+    setupLocalDatabase()
+    print("x")
     # configuration for the main window
     wnd = Window(
         showBarOnTop=True,
