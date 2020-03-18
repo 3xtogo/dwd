@@ -1,5 +1,5 @@
 import tkinter as tk
-from src.helper.functions import timeStamp
+from helper.functions import timeStamp
 
 
 class MainWindow:
