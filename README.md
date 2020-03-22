@@ -1,4 +1,6 @@
 # dwd
 University Project 
-a rasberry pi based gui and database backend doorsign
-"dude where is my door" as a reference to the fil dude where is my car
+a rasberry pi based gui and database backended doorsign
+dude where is my door
+
+gui uses rasberry pi target plattform with a 800x480 lcd touchscreen
