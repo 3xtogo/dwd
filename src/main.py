@@ -2,6 +2,26 @@ import tkinter as tk
 from helper.functions import timeStamp
 
 
+class BaseScreen(tk.Frame):
+
+    def __init__(self, master, name, **kw):
+        tk.Frame.__init__(self, master=master, **kw)
+
+        self.button = None
+        self.buttonImage = None
+        self.name = name
+
+    def buttonPress(self, ev):
+        self.tkraise()
+        print(timeStamp(), "Button {} Pressed".format(self.name))
+
+
+class SpecialBaseScreen(BaseScreen):
+
+    def __init__(self, master, name, **kw):
+        BaseScreen.__init__(self, master=master, name=name, **kw)
+
+
 class MainWindow:
 
     def __init__(self, **kwargs):
@@ -12,7 +32,24 @@ class MainWindow:
         self.config_title = kwargs.get('title')
         self.config_showExitButton = kwargs.get('showExitButton')
 
-        # window properties
+        self.config_buttonWidthFactor = 0.2
+        self.config_headerHeightFactor = 0.2
+        self.config_numOfButtons = 3
+        ## CALCULATION
+
+        screenWidth = int(self.config_screenWidth)
+        screenHeight = int(self.config_screenHeight)
+
+        headerWidth = int(self.config_screenWidth * (1.0 - self.config_buttonWidthFactor))
+        headerHeight = int(self.config_screenHeight * self.config_headerHeightFactor)
+
+        buttonWidth = int(self.config_screenWidth * self.config_buttonWidthFactor)
+        buttonHeight = int(self.config_screenHeight / self.config_numOfButtons)
+
+        displayWidth = int(self.config_screenWidth * (1.0 - self.config_buttonWidthFactor))
+        displayHeight = int(self.config_screenHeight * (1.0 - self.config_headerHeightFactor))
+
+        ## WINDOW PROPERTIES
         self.root = tk.Tk()  # self.root: window
 
         # set window title
@@ -31,57 +68,46 @@ class MainWindow:
         if not self.config_showCursor:
             self.root.config(cursor="none")
 
-        # MainLayout
-        buttonFactor = 0.2  # todo make config
+        ## WIDGETS
+        # self.mainBackground = tk.Label(self.root, width=screenWidth, height=screenHeight, bg="black")
+        # self.mainBackground.place(anchor=tk.NW, x=0, y=0)
 
-        screenWidth = self.config_screenWidth * (1.0 - buttonFactor)
-        sceenHeight = self.config_screenHeight
-        self.screen = tk.Label(self.root, width=int(screenWidth), height=int(sceenHeight), bg="black")
-        self.screen.place(x=0, y=0, anchor="nw", width=self.config_screenWidth, height=self.config_screenHeight)
+        # self.buttonBackground = tk.Label(self.root, width=buttonWidth, height=screenHeight, bg="white")
+        # self.buttonBackground.place(anchor=tk.NW, x=headerWidth, y=0)
 
-        self.buttonArray = tk.Label(self.root, bg="white")
-        self.buttonArray.place(x=int(self.config_screenWidth - self.config_screenWidth * buttonFactor), y=0,
-                               anchor="nw",
-                               width=int(self.config_screenWidth * buttonFactor), height=self.config_screenHeight)
+        self.screen1 = BaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='red', name='Screen1')
+        self.screen2 = BaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='yellow', name='Screen2')
+        self.screen3 = SpecialBaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='green', name='Screen3')
 
-        self.button1 = tk.Label(self.root, bg="white")
-        self.button2 = tk.Label(self.root, bg="grey")
-        self.button3 = tk.Label(self.root, bg="white")
+        self.screen1.place(anchor=tk.NW, x=0, y=headerHeight)
+        self.screen2.place(anchor=tk.NW, x=0, y=headerHeight)
+        self.screen3.place(anchor=tk.NW, x=0, y=headerHeight)
 
-        self.button1.place(anchor="nw", x=self.config_screenWidth - self.config_screenWidth * buttonFactor,
-                           y=int(0 * sceenHeight / 3), width=int(self.config_screenWidth * buttonFactor),
-                           height=int(sceenHeight / 3))
-        self.button2.place(anchor="nw", x=self.config_screenWidth - self.config_screenWidth * buttonFactor,
-                           y=int(1 * sceenHeight / 3), width=int(self.config_screenWidth * buttonFactor),
-                           height=int(sceenHeight / 3))
-        self.button3.place(anchor="nw", x=self.config_screenWidth - self.config_screenWidth * buttonFactor,
-                           y=int(2 * sceenHeight / 3), width=int(self.config_screenWidth * buttonFactor),
-                           height=int(sceenHeight / 3))
+        self.screen1.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='red')
+        self.screen2.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='yellow')
+        self.screen3.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='green')
 
-        # bind button klick funcs
-        self.button1.bind("<Button-1>", self.button1Press)
-        self.button2.bind("<Button-1>", self.button2Press)
-        self.button3.bind("<Button-1>", self.button3Press)
+        self.screen1.button.place(anchor=tk.NW, x=headerWidth, y=0 * buttonHeight)
+        self.screen2.button.place(anchor=tk.NW, x=headerWidth, y=1 * buttonHeight)
+        self.screen3.button.place(anchor=tk.NW, x=headerWidth, y=2 * buttonHeight)
 
+        self.screen1.button.bind('<Button-1>', self.screen1.buttonPress)
+        self.screen2.button.bind('<Button-1>', self.screen2.buttonPress)
+        self.screen3.button.bind('<Button-1>', self.screen3.buttonPress)
 
-        # heder
-        self.header = tk.Label(self.root, bg="grey")
-        self.header.place(x=0, y=0, height=self.config_screenHeight * 0.2,
-                          width=int(self.config_screenWidth * (1.0 - buttonFactor)))
-
-        # HSRM LOGO
-        photoDir = r"assets/Logo_kompakt.png"
-        image = tk.PhotoImage(file=photoDir)
-        disp = image.subsample(10, 10)
-
-        tk.Label(self.root,
-                 image=disp,
-                 bg="white").place()
-
-        #     # Main window
-        #     MainWindow.MainWindowText = tk.StringVar()  # This Variable is a placeholder
-        #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
-        #     MainWindow.MainWindowText.set("Press a Button")
+        # # HSRM LOGO
+        # photoDir = r"assets/Logo_kompakt.png"
+        # image = tk.PhotoImage(file=photoDir)
+        # disp = image.subsample(10, 10)
+        #
+        # tk.Label(self.root,
+        #          image=disp,
+        #          bg="white").place()
+        #
+        # #     # Main window
+        # #     MainWindow.MainWindowText = tk.StringVar()  # This Variable is a placeholder
+        # #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
+        # #     MainWindow.MainWindowText.set("Press a Button")
 
         if self.config_showExitButton:
             EXITBUTTON = tk.Button(self.root,
@@ -91,25 +117,9 @@ class MainWindow:
             REFRESHBUTTON = tk.Button(bg="grey",
                                       text="Refresh").place(anchor=tk.SE, x=self.config_screenWidth,
                                                             y=self.config_screenHeight)
-        #
-        #     # run main
+
+        # run main
         self.root.mainloop()  # buttons active
-
-    # # ButtonFuncs
-    @staticmethod
-    def button1Press(ev):
-        # MainWindow.MainWindowText.set("Hello World")
-        print(timeStamp(), "Button1 Pressed")
-
-    @staticmethod
-    def button2Press(ev):
-        # MainWindow.MainWindowText.set("Hello World")
-        print(timeStamp(), "Button2 Pressed")
-
-    @staticmethod
-    def button3Press(ev):
-        # MainWindow.MainWindowText.set("Hello World")
-        print(timeStamp(), "Button3 Pressed")
 
     def buttenEndPress(self):
         self.root.destroy()
