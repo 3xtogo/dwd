@@ -1,0 +1,29 @@
+{
+  "config":{
+  "showBarOnTop":true,
+        "showCursor":true,
+        "showExitButton":true,
+        "screenHeight":480,
+        "screenWidth":800,
+        "title":"Demo"},
+  "roomID": "A127",
+  "HomeScreen": {
+    "Image": {
+      "ImageSrc":"lokal",
+      "path": "home.png"
+      }
+    }
+  ,
+  "Kalender": {
+    "Image": {
+      "ImageSrc":"lokal",
+      "path": "info.png"
+      }
+  },
+  "Infos": {
+    "Image": {
+      "ImageSrc":"lokal",
+      "path": "home.png"
+      }
+  }
+}

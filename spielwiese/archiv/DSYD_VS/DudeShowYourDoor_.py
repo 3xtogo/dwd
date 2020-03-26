@@ -93,7 +93,7 @@ x_hsrm_logo = 95
 y_hsrm_logo = 95
 #headercanvas
 hCanv = tk.Canvas(master=header,bg = 'white',height =y_hsrm_logo , width = x_hsrm_logo)
-photoImage_hsrm = tk.PhotoImage(file = 'hsrm_logo.gif')
+photoImage_hsrm = tk.PhotoImage(file ='hsrm_logo.gif')
 hCanv.create_image(x_hsrm_logo/2,y_hsrm_logo/2,image=photoImage_hsrm,anchor = tk.CENTER)
 hCanv.pack(side = tk.LEFT)
 #headerfeld 1

@@ -1,7 +1,7 @@
 import tkinter as tk
 from helper.functions import timeStamp
 from PIL import Image, ImageTk
-
+from createDatabase import mainCreateDatabase
 
 class PicturePath:
     home = r"assets/home.png"
@@ -49,6 +49,8 @@ class MyScreen(tk.Frame):
 class Header(tk.Frame):
     def __init__(self, master, **kw):
         tk.Frame.__init__(self, master=master, **kw)
+        print(tk.Frame.winfo_width(self))
+        print(tk.Frame.winfo_height(self))
 
 
 class MySpecialScreen(MyScreen):
@@ -120,20 +122,6 @@ class MainApplication:
         self.screen2.place(anchor=tk.NW, x=0, y=headerHeight)
         self.screen3.place(anchor=tk.NW, x=0, y=headerHeight)
 
-        # # HSRM LOGO
-        # photoDir = r"assets/Logo_kompakt.png"
-        # image = tk.PhotoImage(file=photoDir)
-        # disp = image.subsample(10, 10)
-        #
-        # tk.Label(self.root,
-        #          image=disp,
-        #          bg="white").place()
-        #
-        # #     # Main window
-        # #     MainWindow.MainWindowText = tk.StringVar()  # This Variable is a placeholder
-        # #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
-        # #     MainWindow.MainWindowText.set("Press a Button")
-
         if self.config_showExitButton:
             EXITBUTTON = tk.Button(self.root,
                                    bg="grey",
@@ -144,22 +132,32 @@ class MainApplication:
                                       command=self.refreshRoutine).place(anchor=tk.SE, x=self.config_screenWidth,
                                                                          y=self.config_screenHeight)
 
+        self.teststate = 'None'
+
         # run main
         self.root.mainloop()  # buttons active
 
     def refreshRoutine(self):
-        """call directly"""
+
         self.makeInfoBlue()
 
     def makeInfoBlue(self):
-        self.screen3.updateButtonPicture(PicturePath.infoBlue)
+        if self.teststate == 'None':
+            self.screen3.updateButtonPicture(PicturePath.infoRed)
+            self.teststate = 'Red'
+        else:
+            self.screen3.updateButtonPicture(PicturePath.infoGreen)
+            self.teststate = 'None'
 
     def buttenEndPress(self):
         self.root.destroy()
 
 
 if __name__ == '__main__':
-    # setupLocalDatabase()
+
+    mainCreateDatabase()
+
+
     # configuration for the main window
     wnd = MainApplication(
         showBarOnTop=True,
@@ -169,3 +167,17 @@ if __name__ == '__main__':
         screenWidth=800,
         title='Demo'
     )
+
+    # todo: self.root.after(1000, self.TimeUpdate())
+    # todo:  # #     # Main window
+    #         # #     MainWindow.MainWindowText = tk.StringVar()  # This Variable is a placeholder
+    #         # #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
+    #         # #     MainWindow.MainWindowText.set("Press a Button")
+    # todo: make clock
+    # todo: make a screen from a json obj main screen with people
+    # todo: make a screen from a json obj calender with a list of ics
+    # todo: make a screen from a json obj information
+    # put the json in the database
+    # automate the put json in database
+    # automate fetch from local db
+

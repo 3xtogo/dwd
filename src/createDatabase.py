@@ -2,23 +2,20 @@ import sqlite3
 import json
 import os
 
+
 def createTables(cur):
     """
     creates default tables for database
     :param cur: cursor of sqlite3
     :return: none
     """
-    cursor.execute("""CREATE TABLE "Tuerschild" (
+    cur.execute("""CREATE TABLE "Tuerschild" (
                                 "Raum ID"   TEXT,
-                                "integer1"  INTEGER,
-                                "text1"	    TEXT,
-                                "blob1"	    BLOB,
-                                "real1"	    REAL,
-                                "numeric1"	NUMERIC,
+                                "jsonFormat" TEXT,                    
                                 PRIMARY KEY("Raum ID")
                                 )""")
 
-    cursor.execute("""CREATE TABLE "Person" (
+    cur.execute("""CREATE TABLE "Person" (
                             "lastName"  TEXT,
                             "firstName" TEXT,
                             "picture"   BLOB,
@@ -26,7 +23,7 @@ def createTables(cur):
                             PRIMARY KEY("firstName","lastName")
                             )""")
 
-    cursor.execute("""CREATE TABLE "Events" (
+    cur.execute("""CREATE TABLE "Events" (
                             "id"	    TEXT,
                             "ics"	    BLOB,
                             PRIMARY KEY("id")
@@ -34,13 +31,13 @@ def createTables(cur):
 
 
 def dropAllTables(cur):
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    tables = cursor.fetchall()
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cur.fetchall()
 
     print('tables:', tables)
 
     for table in tables:
-        cursor.execute("DROP TABLE {}".format(table[0]))
+        cur.execute("DROP TABLE {}".format(table[0]))
 
 
 def createEntryFromJson(cur, myJsonFile):
@@ -50,12 +47,13 @@ def createEntryFromJson(cur, myJsonFile):
     :param myJsonFile: path to a json file
     :return:
     """
-    #print(os.listdir())
+    # print(os.listdir())
     with open(myJsonFile) as f:
         jObj = json.load(f)
         print('jObj', jObj)
 
-if __name__ == '__main__':
+
+def mainCreateDatabase():
     localDbPath = r".\database\localApplicationDatabase.db"
     connection = sqlite3.connect(localDbPath)
     print('connected to', localDbPath)
@@ -63,6 +61,7 @@ if __name__ == '__main__':
     cursor = connection.cursor()
 
     dropAllTables(cursor)
+
     connection.commit()
     createTables(cursor)
 
