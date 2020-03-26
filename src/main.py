@@ -1,30 +1,70 @@
 import tkinter as tk
 from helper.functions import timeStamp
+from PIL import Image, ImageTk
 
 
-class BaseScreen(tk.Frame):
+class PicturePath:
+    home = r"assets/home.png"
+    info = r"assets/info.png"
+    infoBlue = r"assets/infoBlue.png"
+    infoGreen = r"assets/infoGreen.png"
+    infoRed = r"assets/infoRed.png"
+    kalendar = r"assets/kalendar.png"
 
-    def __init__(self, master, name, **kw):
+
+class MyScreen(tk.Frame):
+
+    def __init__(self, master, name, buttonHeight, buttonWidth, headerWidth, buttonIndex, picPath, **kw):
         tk.Frame.__init__(self, master=master, **kw)
 
-        self.button = None
-        self.buttonImage = None
+        self.buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
+                                      bg='white',
+                                      # bg=kw.get('bg')
+                                      )
+        self.buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
+        self.buttonCanvas.bind('<Button-1>', self.buttonPress)
+
+        # print('height', self.buttonCanvas.winfo_height(), 'width', self.buttonCanvas.winfo_width())
+
+        self.buttonWidth = buttonWidth
+        self.buttonHeight = buttonHeight
+
+        self.buttonPath = picPath
+        self.buttonImage = Image.open(picPath)
+        self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
+        self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
+        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER, image=self.buttonImage)
+
+        # print(self.buttonCanvas.update())
+        # disp = image.subsample(10, 10)
+        #
+        # tk.Label(self.root,
+        #          image=disp,
+        #          bg="white").place()
+
         self.name = name
+
+    def updateButtonPicture(self, picturePath):
+        self.buttonPath = picturePath
+        self.buttonImage = Image.open(picturePath)
+        self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
+        self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
+        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER, image=self.buttonImage)
 
     def buttonPress(self, ev):
         self.tkraise()
         print(timeStamp(), "Button {} Pressed".format(self.name))
 
 
-class SpecialBaseScreen(BaseScreen):
+class MySpecialScreen(MyScreen):
 
     def __init__(self, master, name, **kw):
-        BaseScreen.__init__(self, master=master, name=name, **kw)
+        MyScreen.__init__(self, master=master, name=name, **kw)
 
 
-class MainWindow:
-
+class MainApplication:
     def __init__(self, **kwargs):
+        """Main Application runs on Device"""
         self.config_screenHeight = kwargs.get('screenHeight')
         self.config_screenWidth = kwargs.get('screenWidth')
         self.config_showBarOnTop = kwargs.get('showBarOnTop')
@@ -74,26 +114,16 @@ class MainWindow:
 
         # self.buttonBackground = tk.Label(self.root, width=buttonWidth, height=screenHeight, bg="white")
         # self.buttonBackground.place(anchor=tk.NW, x=headerWidth, y=0)
-
-        self.screen1 = BaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='red', name='Screen1')
-        self.screen2 = BaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='yellow', name='Screen2')
-        self.screen3 = SpecialBaseScreen(master=self.root, height=displayHeight, width=displayWidth, bg='green', name='Screen3')
+        self.screen1 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth, picPath=PicturePath.home, bg='red',
+                                name='Screen1')
+        self.screen2 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth, picPath=PicturePath.kalendar, bg='yellow',
+                                name='Screen2')
+        self.screen3 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth, picPath=PicturePath.info, bg='green',
+                                name='Screen3')
 
         self.screen1.place(anchor=tk.NW, x=0, y=headerHeight)
         self.screen2.place(anchor=tk.NW, x=0, y=headerHeight)
         self.screen3.place(anchor=tk.NW, x=0, y=headerHeight)
-
-        self.screen1.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='red')
-        self.screen2.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='yellow')
-        self.screen3.button = tk.Frame(master=self.root, height=buttonHeight, width=buttonWidth, bg='green')
-
-        self.screen1.button.place(anchor=tk.NW, x=headerWidth, y=0 * buttonHeight)
-        self.screen2.button.place(anchor=tk.NW, x=headerWidth, y=1 * buttonHeight)
-        self.screen3.button.place(anchor=tk.NW, x=headerWidth, y=2 * buttonHeight)
-
-        self.screen1.button.bind('<Button-1>', self.screen1.buttonPress)
-        self.screen2.button.bind('<Button-1>', self.screen2.buttonPress)
-        self.screen3.button.bind('<Button-1>', self.screen3.buttonPress)
 
         # # HSRM LOGO
         # photoDir = r"assets/Logo_kompakt.png"
@@ -115,11 +145,18 @@ class MainWindow:
                                    text="App beenden",
                                    command=self.buttenEndPress).place(anchor=tk.NE, x=self.config_screenWidth, y=0)
             REFRESHBUTTON = tk.Button(bg="grey",
-                                      text="Refresh").place(anchor=tk.SE, x=self.config_screenWidth,
-                                                            y=self.config_screenHeight)
+                                      text="Refresh",
+                                      command=self.refreshRoutine).place(anchor=tk.SE, x=self.config_screenWidth,
+                                                                       y=self.config_screenHeight)
 
         # run main
         self.root.mainloop()  # buttons active
+
+    def refreshRoutine(self):
+        self.makeInfoBlue()
+
+    def makeInfoBlue(self):
+        self.screen3.updateButtonPicture(PicturePath.infoBlue)
 
     def buttenEndPress(self):
         self.root.destroy()
@@ -128,7 +165,7 @@ class MainWindow:
 if __name__ == '__main__':
     # setupLocalDatabase()
     # configuration for the main window
-    wnd = MainWindow(
+    wnd = MainApplication(
         showBarOnTop=True,
         showCursor=True,
         showExitButton=True,
