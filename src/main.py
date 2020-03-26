@@ -17,6 +17,9 @@ class MyScreen(tk.Frame):
     def __init__(self, master, name, buttonHeight, buttonWidth, headerWidth, buttonIndex, picPath, **kw):
         tk.Frame.__init__(self, master=master, **kw)
 
+        self.name = name
+        ###
+        #
         self.buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
                                       bg='white',
                                       # bg=kw.get('bg')
@@ -24,25 +27,12 @@ class MyScreen(tk.Frame):
         self.buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
         self.buttonCanvas.bind('<Button-1>', self.buttonPress)
 
-        # print('height', self.buttonCanvas.winfo_height(), 'width', self.buttonCanvas.winfo_width())
-
         self.buttonWidth = buttonWidth
         self.buttonHeight = buttonHeight
 
-        self.buttonPath = picPath
-        self.buttonImage = Image.open(picPath)
-        self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
-        self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
-        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER, image=self.buttonImage)
-
-        # print(self.buttonCanvas.update())
-        # disp = image.subsample(10, 10)
-        #
-        # tk.Label(self.root,
-        #          image=disp,
-        #          bg="white").place()
-
-        self.name = name
+        self.buttonPath = None
+        self.buttonImage = None
+        self.updateButtonPicture(picPath)
 
     def updateButtonPicture(self, picturePath):
         self.buttonPath = picturePath
@@ -54,6 +44,11 @@ class MyScreen(tk.Frame):
     def buttonPress(self, ev):
         self.tkraise()
         print(timeStamp(), "Button {} Pressed".format(self.name))
+
+
+class Header(tk.Frame):
+    def __init__(self, master, **kw):
+        tk.Frame.__init__(self, master=master, **kw)
 
 
 class MySpecialScreen(MyScreen):
@@ -147,12 +142,13 @@ class MainApplication:
             REFRESHBUTTON = tk.Button(bg="grey",
                                       text="Refresh",
                                       command=self.refreshRoutine).place(anchor=tk.SE, x=self.config_screenWidth,
-                                                                       y=self.config_screenHeight)
+                                                                         y=self.config_screenHeight)
 
         # run main
         self.root.mainloop()  # buttons active
 
     def refreshRoutine(self):
+        """call directly"""
         self.makeInfoBlue()
 
     def makeInfoBlue(self):
