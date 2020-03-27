@@ -155,7 +155,7 @@ class MainApplication:
 
 if __name__ == '__main__':
 
-    mainCreateDatabase()
+    #mainCreateDatabase()
 
 
     # configuration for the main window
