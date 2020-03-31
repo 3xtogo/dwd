@@ -1,7 +1,12 @@
-import tkinter as tk
 from helper.functions import timeStamp
+from database.localDb.localDb import LocalDb
+
+import tkinter as tk
 from PIL import Image, ImageTk
-from createDatabase import mainCreateDatabase
+
+
+# from createDatabase import mainCreateDatabase
+
 
 class PicturePath:
     home = r"assets/home.png"
@@ -154,11 +159,11 @@ class MainApplication:
 
 
 if __name__ == '__main__':
-
-    #mainCreateDatabase()
-
-
     # configuration for the main window
+
+    LocalDb()
+
+
     wnd = MainApplication(
         showBarOnTop=True,
         showCursor=True,
@@ -174,10 +179,7 @@ if __name__ == '__main__':
     #         # #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
     #         # #     MainWindow.MainWindowText.set("Press a Button")
     # todo: make clock
-    # todo: make a screen from a json obj main screen with people
-    # todo: make a screen from a json obj calender with a list of ics
-    # todo: make a screen from a json obj information
-    # put the json in the database
-    # automate the put json in database
+    # todo: make a screen from
+    # todo: make a screen from
+    # todo: make a screen from
     # automate fetch from local db
-

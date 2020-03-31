@@ -1,4 +1,6 @@
 Allgemeines
+Installation auf dem Rasberry Pi mit NOOBS_OS_installer
+
 
 Bildschirm umdrehen
 in boot.txt Zeile hinzufügen:

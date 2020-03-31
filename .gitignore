@@ -103,3 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 /doku/
+/src/database/localDb/localDatabase.db
