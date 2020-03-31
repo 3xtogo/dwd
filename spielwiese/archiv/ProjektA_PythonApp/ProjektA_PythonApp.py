@@ -40,7 +40,7 @@ root.config(cursor="none") #no cursor visible
 #               |       |---Logo                                OK
 #               |       |---Headlabel                   OK
 #               |       |---Time                                OK
-#               |               |---ClockLabel          OK - TODO: size, font, bg ...?
+#               |               |---ClockLabel          OK -
 #               |
 #               |---Body                                        OK
 #               |       |---BodyLeft                    OK

@@ -173,13 +173,23 @@ if __name__ == '__main__':
         title='Demo'
     )
 
-    # todo: self.root.after(1000, self.TimeUpdate())
-    # todo:  # #     # Main window
-    #         # #     MainWindow.MainWindowText = tk.StringVar()  # This Variable is a placeholder
-    #         # #     label = tk.Label(self.root,textvariable=self.MainWindowText).grid(row=1,column=1)
-    #         # #     MainWindow.MainWindowText.set("Press a Button")
-    # todo: make clock
-    # todo: make a screen from
-    # todo: make a screen from
-    # todo: make a screen from
-    # automate fetch from local db
+    # todo: Beispieldaten anlegen
+
+    # todo: joined Table anlegen
+
+    # todo: a clock with tk.Stringvar in a canvas and self.root.after(1000, self.TimeUpdate())
+
+    # todo: anzeige screen1
+
+    # todo: anzeige screen2
+
+    # todo: anzeige screen3
+
+    # todo: fetch Data For Screen From local Database
+
+    # todo: update mechanism for screen from local db
+
+    # todo: server db
+
+    # todo screen that can access the db and change entries (optional)
+

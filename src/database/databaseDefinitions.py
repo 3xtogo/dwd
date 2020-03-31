@@ -40,13 +40,14 @@ class Table:
         self.columns.append(column)
 
     def primaryKey(self):
+        primaryKey = []
         for col in self.columns:
             if col.isPrimaryKey:
                 return col
         return None
 
 
-class Dozenten(Table):
+class Dozenten_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Dozenten')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
@@ -60,7 +61,7 @@ class Dozenten(Table):
         self.defineColumn(Column('DisplayID', Datatype.TEXT))
 
 
-class Kalender(Table):
+class Kalender_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Kalender')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
@@ -71,7 +72,7 @@ class Kalender(Table):
         self.defineColumn(Column('RaumID', Datatype.TEXT))
 
 
-class Raum(Table):
+class Raum_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Raum')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
@@ -83,14 +84,14 @@ class Raum(Table):
         self.defineColumn(Column('Studienbereich', Datatype.TEXT))
 
 
-class Display(Table):
+class Display_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Display')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
         self.defineColumn(Column('RaumID', Datatype.TEXT))
 
 
-class Informationen(Table):
+class Informationen_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Informationen')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
@@ -98,13 +99,20 @@ class Informationen(Table):
         self.defineColumn(Column('AnzeigeDauer', Datatype.TEXT))
         self.defineColumn(Column('DozID', Datatype.TEXT))
 
+class Media_Table(Table):
+    def __init__(self):
+        Table.__init__(self, 'Media')
+        self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
+        self.defineColumn(Column('Media', Datatype.BLOB))
+
+
 
 if __name__ == '__main__':
-    tables = [Dozenten(),
-              Kalender(),
-              Raum(),
-              Display(),
-              Informationen()]
+    tables = [Dozenten_Table(),
+              Kalender_Table(),
+              Raum_Table(),
+              Display_Table(),
+              Informationen_Table()]
 
     for tab in tables:
         print(tab.name, tab.columnOptions())

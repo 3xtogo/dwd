@@ -10,7 +10,7 @@ from datetime import datetime
 #		|	|---Logo<-Frame			OK
 #		|	|---headBanner			OK
 #		|	|---Time				OK
-#		|		|---ClockLabel		OK - TODO: size, font, bg ...?
+#		|		|---ClockLabel		OK
 #		|
 #		|---Body					OK
 #		|	|---BodyLeft			OK

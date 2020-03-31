@@ -2,11 +2,11 @@ import sqlite3
 import os
 from database.databaseDefinitions import *
 
-tables = [Dozenten(),
-          Kalender(),
-          Raum(),
-          Display(),
-          Informationen()]
+tables = [Dozenten_Table(),
+          Kalender_Table(),
+          Raum_Table(),
+          Display_Table(),
+          Informationen_Table()]
 
 
 class LocalDb:
@@ -51,16 +51,28 @@ class LocalDb:
     def close(self):
         self.connection.close()
 
+    ### ADD Data
 
-    
+    def addDozent(self, ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID):
+        pass
 
+    def addKalender(self, ID, WochentagTag, StartUhrzeit, Endurzeit, Ereignis, RaumID):
+        pass
 
+    def addRaum(self, ID, Bezeichnung, Typ, AnzPlaetze, Gebaeude, Fachbereich, Studienbereich):
+        pass
+
+    def addDisplay(self, ID, RaumID):
+        pass
+
+    def addInformationen(self, ID, InfoText, AnzeigeDauer, DozID):
+        pass
 
 
 if __name__ == '__main__':
     ldb = LocalDb()
-    # print('all Tables\n', ldb.getAllTablesFromDb())
     ldb.dropAllTables()
     ldb.createTables()
     ldb.commit()
+    print('all Tables\n', ldb.getAllTablesFromDb())
     ldb.close()

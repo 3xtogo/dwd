@@ -36,7 +36,7 @@ class Window:
     MainWindowText = None
 
     def __init__(self, **kwargs):
-        # todo: make a ini file for that
+        #  make an ini file for that
         self.config_screenHeight = kwargs.get('screenHeight')
         self.config_screenWidth = kwargs.get('screenWidth')
         self.config_showBarOnTop = kwargs.get('showBarOnTop')
