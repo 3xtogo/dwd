@@ -52,7 +52,7 @@ class LocalDb:
         self.connection.close()
 
     ### ADD Data
-
+    ############
     def addDozent(self, ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID):
         pass
 
