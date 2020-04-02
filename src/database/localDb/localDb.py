@@ -53,42 +53,44 @@ class LocalDb:
 
     # ADD Data
     ##########
-    def addDozent(self, ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID):
-        sql = """INSERT INTO {} 
-VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {})""" \
-            .format(Dozenten_Table().name,
-                    ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID)
-        print(sql)
-        self.cursor.execute(sql)
+    def addDozent(self, dozent: Dozent):
+        self.cursor.execute(dozent.sqlInsert())
 
-    def addKalender(self, ID, WochentagTag, StartUhrzeit, Ereignis, RaumID):
-        sql = """INSERT INTO {} 
-        VALUES ()""" \
-            .format(Kalender_Table().name, ID, WochentagTag, StartUhrzeit, Ereignis, RaumID)
-        print(sql)
-        self.cursor.execute(sql)
+    def addKalender(self, kalender: Kalender):
+        self.cursor.execute(kalender.sqlInsert())
 
-    def addRaum(self, ID, Bezeichnung, Typ, AnzPlaetze, Gebaeude, Fachbereich, Studienbereich):
-        sql = """INSERT INTO {} 
-        VALUES ()""" \
-            .format(Raum_Table().name, ID, Bezeichnung, Typ, AnzPlaetze, Gebaeude, Fachbereich, Studienbereich)
-        self.cursor.execute(sql)
+    def addRaum(self, raum: Raum):
+        self.cursor.execute(raum.sqlInsert())
 
-    def addDisplay(self, ID, RaumID):
-        sql = """INSERT INTO {} 
-        VALUES ()""" \
-            .format(Display_Table().name, ID, RaumID)
-        self.cursor.execute(sql)
+    def addDisplay(self, display: Display):
+        self.cursor.execute(display.sqlInsert())
 
-    def addInformationen(self, ID, InfoText, AnzeigeDauer, DozID):
-        sql = """INSERT INTO {} 
-        VALUES ()""" \
-            .format(Informationen_Table().name, ID, InfoText, AnzeigeDauer, DozID)
-        self.cursor.execute(sql)
+    def addInformationen(self, information: Information):
+        self.cursor.execute(information.sqlInsert())
 
-    def addExampleData(self):
-        self.addDozent(1, "'Visar'", "'Januzaj'", "'Fr-10:00-12:00'", "'visar.januzaj@hs-rm.de'", "'0160123456'",
-                       "'url'", "'A123'", 1)
+    def addMedia(self, media: Media):
+        self.cursor.execute(media.sqlInsert())
+
+    def exampleData(self):
+        self.addDozent(Dozent(ID=1,
+                              Vorname="'Visar'",
+                              Nachname="'Jauzaj'",
+                              Sprechzeiten="'Fr_10_00_12_00'",
+                              E_Mail="'visar.januzaj@hs-rm.de'",
+                              Telefonnummer="'0160123456'",
+                              StudIP_Link="'url'",
+                              RaumNr="'A123'",
+                              DisplayID=1))
+        
+        self.addKalender(Kalender(ID=1,
+                                  WochentagTag="'MO'",
+                                  StartUhrzeit="'10:00'",
+                                  Endurzeit="'11:30'",
+                                  Ereignis="'iOOP'",
+                                  RaumID="'A127'"))
+        self.addRaum()
+        self.addDisplay()
+        self.addInformationen()
 
         pass
 
@@ -99,6 +101,6 @@ if __name__ == '__main__':
     ldb.createTables()
 
     print('all Tables\n', ldb.getAllTablesFromDb())
-    ldb.addExampleData()
+    ldb.exampleData()
     ldb.commit()
     ldb.close()
