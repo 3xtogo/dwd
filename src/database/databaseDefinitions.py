@@ -62,6 +62,21 @@ class Dozent:
         self.RaumNr = RaumNr
         self.DisplayID = DisplayID
 
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {})""" \
+            .format(Dozenten_Table().name,
+                    self.ID,
+                    self.Vorname,
+                    self.Nachname,
+                    self.Sprechzeiten,
+                    self.E_Mail,
+                    self.Telefonnummer,
+                    self.StudIP_Link,
+                    self.RaumNr,
+                    self.DisplayID)
+        return sql
+
 
 class Dozenten_Table(Table):
     def __init__(self):
@@ -86,6 +101,18 @@ class Kalender:
         self.Ereignis = Ereignis
         self.RaumID = RaumID
 
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {}, {}, {}, {}, {})""" \
+            .format(Kalender_Table().name,
+                    self.ID,
+                    self.WochentagTag,
+                    self.StartUhrzeit,
+                    self.Endurzeit,
+                    self.Ereignis,
+                    self.RaumID)
+        return sql
+
 
 class Kalender_Table(Table):
     def __init__(self):
@@ -108,6 +135,19 @@ class Raum:
         self.Fachbereich = Fachbereich
         self.Studienbereich = Studienbereich
 
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {}, {}, {}, {}, {}, {})""" \
+            .format(Raum_Table().name,
+                    self.ID,
+                    self.Bezeichnung,
+                    self.Typ,
+                    self.AnzPlaetze,
+                    self.Gebaeude,
+                    self.Fachbereich,
+                    self.Studienbereich)
+        return sql
+
 
 class Raum_Table(Table):
     def __init__(self):
@@ -126,6 +166,14 @@ class Display:
         self.ID = ID
         self.RaumID = RaumID
 
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {})""" \
+            .format(Display_Table().name,
+                    self.ID,
+                    self.RaumID)
+        return sql
+
 
 class Display_Table(Table):
     def __init__(self):
@@ -140,6 +188,16 @@ class Information:
         self.InfoText = InfoText
         self.AnzeigeDauer = AnzeigeDauer
         self.DozID = DozID
+
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {}, {}, {})""" \
+            .format(Informationen_Table().name,
+                    self.ID,
+                    self.InfoText,
+                    self.AnzeigeDauer,
+                    self.DozID)
+        return sql
 
 
 class Informationen_Table(Table):
@@ -156,6 +214,15 @@ class Media:
         self.ID = ID
         self.MediaDump = MediaDump
         self.MediaType = MediaType
+
+    def sqlInsert(self):
+        sql = """INSERT INTO {} 
+        VALUES ({}, {}, {})""" \
+            .format(Media_Table().name,
+                    self.ID,
+                    self.MediaDump,
+                    self.MediaType)
+        return sql
 
 
 class Media_Table(Table):
