@@ -1,11 +1,9 @@
 from helper.functions import timeStamp
-from database.localDb.localDb import LocalDb
+from database.localDb import localDb
+
 
 import tkinter as tk
 from PIL import Image, ImageTk
-
-
-# from createDatabase import mainCreateDatabase
 
 
 class PicturePath:
@@ -44,7 +42,8 @@ class MyScreen(tk.Frame):
         self.buttonImage = Image.open(picturePath)
         self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
         self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
-        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER, image=self.buttonImage)
+        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER,
+                                       image=self.buttonImage)
 
     def buttonPress(self, ev):
         self.tkraise()
@@ -66,6 +65,9 @@ class MySpecialScreen(MyScreen):
 
 class MainApplication:
     def __init__(self, **kwargs):
+        self.localDb = localDb()
+
+
         """Main Application runs on Device"""
         self.config_screenHeight = kwargs.get('screenHeight')
         self.config_screenWidth = kwargs.get('screenWidth')
@@ -116,11 +118,17 @@ class MainApplication:
 
         # self.buttonBackground = tk.Label(self.root, width=buttonWidth, height=screenHeight, bg="white")
         # self.buttonBackground.place(anchor=tk.NW, x=headerWidth, y=0)
-        self.screen1 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth, picPath=PicturePath.home, bg='red',
+        self.screen1 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth,
+                                picPath=PicturePath.home, bg='red',
                                 name='Screen1')
-        self.screen2 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth, picPath=PicturePath.kalendar, bg='yellow',
+        self.screen2 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth,
+                                picPath=PicturePath.kalendar, bg='yellow',
                                 name='Screen2')
-        self.screen3 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight, buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth, picPath=PicturePath.info, bg='green',
+        self.screen3 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth,
+                                picPath=PicturePath.info, bg='green',
                                 name='Screen3')
 
         self.screen1.place(anchor=tk.NW, x=0, y=headerHeight)
@@ -139,6 +147,7 @@ class MainApplication:
 
         self.teststate = 'None'
 
+    def runMainLoop(self):
         # run main
         self.root.mainloop()  # buttons active
 
@@ -161,9 +170,6 @@ class MainApplication:
 if __name__ == '__main__':
     # configuration for the main window
 
-    LocalDb()
-
-
     wnd = MainApplication(
         showBarOnTop=True,
         showCursor=True,
@@ -172,6 +178,8 @@ if __name__ == '__main__':
         screenWidth=800,
         title='Demo'
     )
+
+    wnd.runMainLoop()
 
     # todo: Beispieldaten anlegen
 
@@ -192,4 +200,3 @@ if __name__ == '__main__':
     # todo: server db
 
     # todo screen that can access the db and change entries (optional)
-

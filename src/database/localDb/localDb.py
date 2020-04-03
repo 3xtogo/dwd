@@ -81,16 +81,16 @@ class LocalDb:
                               StudIP_Link="'url'",
                               RaumNr="'A123'",
                               DisplayID=1))
-        
+
         self.addKalender(Kalender(ID=1,
                                   WochentagTag="'MO'",
                                   StartUhrzeit="'10:00'",
                                   Endurzeit="'11:30'",
                                   Ereignis="'iOOP'",
                                   RaumID="'A127'"))
-        self.addRaum()
-        self.addDisplay()
-        self.addInformationen()
+        self.addRaum(Raum("'A127'", "'Büro'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))  # todo
+        self.addDisplay(Display(1, "'A127'", "'...'"))  # todo
+        self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))  # todo
 
         pass
 
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     ldb.dropAllTables()
     ldb.createTables()
 
-    print('all Tables\n', ldb.getAllTablesFromDb())
+    print('all Tables:', ldb.getAllTablesFromDb())
     ldb.exampleData()
     ldb.commit()
     ldb.close()

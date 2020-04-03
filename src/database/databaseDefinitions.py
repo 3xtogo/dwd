@@ -152,7 +152,7 @@ class Raum:
 class Raum_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Raum')
-        self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
+        self.defineColumn(Column('ID', Datatype.TEXT, isPrimaryKey=True))
         self.defineColumn(Column('Bezeichnung', Datatype.TEXT))
         self.defineColumn(Column('Typ', Datatype.TEXT))
         self.defineColumn(Column('AnzPlaetze', Datatype.TEXT))
@@ -162,16 +162,18 @@ class Raum_Table(Table):
 
 
 class Display:
-    def __init__(self, ID, RaumID):
+    def __init__(self, ID, RaumID, Json):
         self.ID = ID
         self.RaumID = RaumID
+        self.Json = Json
 
     def sqlInsert(self):
         sql = """INSERT INTO {} 
-        VALUES ({}, {})""" \
+        VALUES ({}, {}, {})""" \
             .format(Display_Table().name,
                     self.ID,
-                    self.RaumID)
+                    self.RaumID,
+                    self.Json)
         return sql
 
 
@@ -180,6 +182,7 @@ class Display_Table(Table):
         Table.__init__(self, 'Display')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
         self.defineColumn(Column('RaumID', Datatype.TEXT))
+        self.defineColumn(Column('Json', Datatype.BLOB))
 
 
 class Information:
