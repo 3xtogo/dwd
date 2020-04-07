@@ -1,5 +1,5 @@
 from helper.functions import timeStamp
-from database.localDb.localDb import LocalDb
+from displayData.displayData import DisplayData
 
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -16,7 +16,7 @@ class PicturePath:
 
 class MyScreen(tk.Frame):
 
-    def __init__(self, master, name, buttonHeight, buttonWidth, headerWidth, buttonIndex, picPath, **kw):
+    def __init__(self, master, name, displayWidth, displayHeight, buttonHeight, buttonWidth, headerWidth, headerHeight, buttonIndex, picPath, **kw):
         tk.Frame.__init__(self, master=master, **kw)
 
         self.name = name
@@ -34,6 +34,12 @@ class MyScreen(tk.Frame):
         self.buttonPath = None
         self.buttonImage = None
         self.updateButtonPicture(picPath)
+
+        self.leftscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='red')
+        self.rightscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='green')
+
+        self.leftscreen.place(anchor=tk.NW, x=0, y=0)
+        self.rightscreen.place(anchor=tk.NW, x=int(displayWidth / 2), y=0)
 
     def updateButtonPicture(self, picturePath):
         self.buttonPath = picturePath
@@ -61,27 +67,12 @@ class MySpecialScreen(MyScreen):
         MyScreen.__init__(self, master=master, name=name, **kw)
 
 
-class DisplayData:
-    def __init__(self, displayId):
-        self.displayId = displayId
-
-        self.localDb = LocalDb
-
-    def testFuncDb(self):
-        print(self.localDb.listTables)
-
-        self.localDb.cursor.execute("""SELECT * FROM Display WHERE Display.ID={}""".format(self.displayId))
-        print(self.localDb.cursor.fetchall())
-
-
 class MainApplication:
     def __init__(self, **kwargs):
         self.displayId = kwargs.get('displayId')
 
         # some updateLocalDb
         self.displayData = DisplayData(self.displayId)
-
-        self.testFuncDb()
 
         # configs
         self.config_screenHeight = kwargs.get('screenHeight')
@@ -134,15 +125,15 @@ class MainApplication:
         # self.buttonBackground = tk.Label(self.root, width=buttonWidth, height=screenHeight, bg="white")
         # self.buttonBackground.place(anchor=tk.NW, x=headerWidth, y=0)
         self.screen1 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth,
+                                buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
                                 picPath=PicturePath.home, bg='red',
                                 name='Screen1')
         self.screen2 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth,
+                                buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
                                 picPath=PicturePath.kalendar, bg='yellow',
                                 name='Screen2')
         self.screen3 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth,
+                                buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayWidth,
                                 picPath=PicturePath.info, bg='green',
                                 name='Screen3')
 
