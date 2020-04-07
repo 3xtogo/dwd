@@ -35,13 +35,13 @@ class LocalDb:
 
             self.cursor.execute(sql)
 
-    def getAllTablesFromDb(self):
+    def listTables(self):
         sql = """SELECT name FROM sqlite_master WHERE type='table'"""
         self.cursor.execute(sql)
         return [result[0] for result in self.cursor.fetchall()]
 
     def dropAllTables(self):
-        for table in self.getAllTablesFromDb():
+        for table in self.listTables():
             sql = """DROP TABLE {}""".format(table)
             self.connection.execute(sql)
 
@@ -71,6 +71,10 @@ class LocalDb:
     def addMedia(self, media: Media):
         self.cursor.execute(media.sqlInsert())
 
+    def joinTables(self):
+        sql = """JOIN SOMETHING"""
+        self.cursor.execute(sql)
+
     def exampleData(self):
         self.addDozent(Dozent(ID=1,
                               Vorname="'Visar'",
@@ -82,15 +86,49 @@ class LocalDb:
                               RaumNr="'A123'",
                               DisplayID=1))
 
+        self.addDozent(Dozent(ID=2,
+                              Vorname="'Zinnen'",
+                              Nachname="'Andreas'",
+                              Sprechzeiten="'Di_10_00_12_00'",
+                              E_Mail="'andreas.zinnen@hs-rm.de'",
+                              Telefonnummer="'0160123465'",
+                              StudIP_Link="'url2'",
+                              RaumNr="'A123'",
+                              DisplayID=1))
+
+        self.addDozent(Dozent(ID=3,
+                              Vorname="'Some'",
+                              Nachname="'OtherDozent'",
+                              Sprechzeiten="'Mo_08_15_12_00'",
+                              E_Mail="'ha_myNameis@hs-rm.de'",
+                              Telefonnummer="'0160121465'",
+                              StudIP_Link="'url3'",
+                              RaumNr="'A123'",
+                              DisplayID=1))
+
         self.addKalender(Kalender(ID=1,
                                   WochentagTag="'MO'",
                                   StartUhrzeit="'10:00'",
                                   Endurzeit="'11:30'",
                                   Ereignis="'iOOP'",
                                   RaumID="'A127'"))
-        self.addRaum(Raum("'A127'", "'Büro'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))  # todo
-        self.addDisplay(Display(1, "'A127'", "'...'"))  # todo
-        self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))  # todo
+
+        self.addKalender(Kalender(ID=2,
+                                  WochentagTag="'MO'",
+                                  StartUhrzeit="'10:00'",
+                                  Endurzeit="'11:30'",
+                                  Ereignis="'iOOP'",
+                                  RaumID="'A127'"))
+
+
+        self.addRaum(Raum("'A127'", "'Büro'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))
+        self.addRaum(Raum("'A123'", "'Seminar'", "'Seminar'", 3, "'A1'", "'ING'", "'U&D'"))
+
+        self.addDisplay(Display(1, "'A127'", "'...'"))
+        self.addDisplay(Display(2, "'A123'", "'...'"))
+
+        self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))
+        self.addInformationen(Information(2, "'Das ist die zweite Nachricht'", "'3.5h'", 1))
 
         pass
 
@@ -100,7 +138,7 @@ if __name__ == '__main__':
     ldb.dropAllTables()
     ldb.createTables()
 
-    print('all Tables:', ldb.getAllTablesFromDb())
+    print('all Tables:', ldb.listTables())
     ldb.exampleData()
     ldb.commit()
     ldb.close()

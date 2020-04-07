@@ -1,6 +1,5 @@
 from helper.functions import timeStamp
-from database.localDb import localDb
-
+from database.localDb.localDb import LocalDb
 
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -21,8 +20,7 @@ class MyScreen(tk.Frame):
         tk.Frame.__init__(self, master=master, **kw)
 
         self.name = name
-        ###
-        #
+
         self.buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
                                       bg='white',
                                       # bg=kw.get('bg')
@@ -63,12 +61,29 @@ class MySpecialScreen(MyScreen):
         MyScreen.__init__(self, master=master, name=name, **kw)
 
 
+class DisplayData:
+    def __init__(self, displayId):
+        self.displayId = displayId
+
+        self.localDb = LocalDb
+
+    def testFuncDb(self):
+        print(self.localDb.listTables)
+
+        self.localDb.cursor.execute("""SELECT * FROM Display WHERE Display.ID={}""".format(self.displayId))
+        print(self.localDb.cursor.fetchall())
+
+
 class MainApplication:
     def __init__(self, **kwargs):
-        self.localDb = localDb()
+        self.displayId = kwargs.get('displayId')
 
+        # some updateLocalDb
+        self.displayData = DisplayData(self.displayId)
 
-        """Main Application runs on Device"""
+        self.testFuncDb()
+
+        # configs
         self.config_screenHeight = kwargs.get('screenHeight')
         self.config_screenWidth = kwargs.get('screenWidth')
         self.config_showBarOnTop = kwargs.get('showBarOnTop')
@@ -176,12 +191,11 @@ if __name__ == '__main__':
         showExitButton=True,
         screenHeight=480,
         screenWidth=800,
-        title='Demo'
+        title='Demo',
+        displayId=1
     )
 
     wnd.runMainLoop()
-
-    # todo: Beispieldaten anlegen
 
     # todo: joined Table anlegen
 
