@@ -189,20 +189,16 @@ if __name__ == '__main__':
 
     wnd.runMainLoop()
 
-    # todo: joined Table anlegen
-
-    # todo: a clock with tk.Stringvar in a canvas and self.root.after(1000, self.TimeUpdate())
-
     # todo: anzeige screen1
 
     # todo: anzeige screen2
 
     # todo: anzeige screen3
 
-    # todo: fetch Data For Screen From local Database
+    # todo: a clock with tk.Stringvar in a canvas and self.root.after(1000, self.TimeUpdate())
 
-    # todo: update mechanism for screen from local db
+    # todo: update displayData from local db when a certain when the database has new content
 
     # todo: server db
 
-    # todo screen that can access the db and change entries (optional)
+    # todo screen that can access the db and change entries (cmdline first)
