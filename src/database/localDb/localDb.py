@@ -120,12 +120,11 @@ class LocalDb:
                                   Ereignis="'iOOP'",
                                   RaumID="'A127'"))
 
+        self.addRaum(Raum(1, "'A127'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))
+        self.addRaum(Raum(2, "'A123'", "'Seminar'", 3, "'A1'", "'ING'", "'U&D'"))
 
-        self.addRaum(Raum("'A127'", "'Büro'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))
-        self.addRaum(Raum("'A123'", "'Seminar'", "'Seminar'", 3, "'A1'", "'ING'", "'U&D'"))
-
-        self.addDisplay(Display(1, "'A127'", "'...'"))
-        self.addDisplay(Display(2, "'A123'", "'...'"))
+        self.addDisplay(Display(1, 1, """'{"bar":1}'"""))  # display 1 points to room 1
+        self.addDisplay(Display(2, 2, """'{"foo":2}'"""))  # display 2 points to room 2
 
         self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))
         self.addInformationen(Information(2, "'Das ist die zweite Nachricht'", "'3.5h'", 1))

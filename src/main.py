@@ -1,5 +1,5 @@
-from helper.functions import timeStamp
-from displayData.displayData import DisplayData
+from helperFunctions import timeStamp
+from displayData import DisplayData
 
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -21,12 +21,12 @@ class MyScreen(tk.Frame):
 
         self.name = name
 
-        self.buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
-                                      bg='white',
-                                      # bg=kw.get('bg')
-                                      )
-        self.buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
-        self.buttonCanvas.bind('<Button-1>', self.buttonPress)
+        self.tkCanv_buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
+                                             bg='white',
+                                             # bg=kw.get('bg')
+                                             )
+        self.tkCanv_buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
+        self.tkCanv_buttonCanvas.bind('<Button-1>', self.buttonPress)
 
         self.buttonWidth = buttonWidth
         self.buttonHeight = buttonHeight
@@ -35,19 +35,19 @@ class MyScreen(tk.Frame):
         self.buttonImage = None
         self.updateButtonPicture(picPath)
 
-        self.leftscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='red')
-        self.rightscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='green')
+        self.tkCanv_leftscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='red')
+        self.tkCanv_rightscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='green')
 
-        self.leftscreen.place(anchor=tk.NW, x=0, y=0)
-        self.rightscreen.place(anchor=tk.NW, x=int(displayWidth / 2), y=0)
+        self.tkCanv_leftscreen.place(anchor=tk.NW, x=0, y=0)
+        self.tkCanv_rightscreen.place(anchor=tk.NW, x=int(displayWidth / 2), y=0)
 
     def updateButtonPicture(self, picturePath):
         self.buttonPath = picturePath
         self.buttonImage = Image.open(picturePath)
         self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
         self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
-        self.buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER,
-                                       image=self.buttonImage)
+        self.tkCanv_buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER,
+                                              image=self.buttonImage)
 
     def buttonPress(self, ev):
         self.tkraise()
@@ -73,6 +73,7 @@ class MainApplication:
 
         # some updateLocalDb
         self.displayData = DisplayData(self.displayId)
+        #self.displayData.fetchFromLocalDb()
 
         # configs
         self.config_screenHeight = kwargs.get('screenHeight')

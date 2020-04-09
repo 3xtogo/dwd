@@ -148,6 +148,11 @@ class Raum:
                     self.Studienbereich)
         return sql
 
+    @staticmethod
+    def fromQuery(queryResult):
+        ID, Bezeichnung, Typ, AnzPlaetze, Gebaeude, Fachbereich, Studienbereich = queryResult[0]
+        return Raum(ID, Bezeichnung, Typ, AnzPlaetze, Gebaeude, Fachbereich, Studienbereich)
+
 
 class Raum_Table(Table):
     def __init__(self):
@@ -176,12 +181,17 @@ class Display:
                     self.Json)
         return sql
 
+    @staticmethod
+    def fromQuery(query):
+        ID, RaumID, Json = query[0]
+        return Display(ID, RaumID, Json)
+
 
 class Display_Table(Table):
     def __init__(self):
         Table.__init__(self, 'Display')
         self.defineColumn(Column('ID', Datatype.INT, isPrimaryKey=True))
-        self.defineColumn(Column('RaumID', Datatype.TEXT))
+        self.defineColumn(Column('RaumID', Datatype.INT))
         self.defineColumn(Column('Json', Datatype.BLOB))
 
 
