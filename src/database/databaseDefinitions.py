@@ -77,6 +77,11 @@ class Dozent:
                     self.DisplayID)
         return sql
 
+    @staticmethod
+    def fromQuery(query):
+        ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID = query[0]
+        return Dozent(ID, Vorname, Nachname, Sprechzeiten, E_Mail, Telefonnummer, StudIP_Link, RaumNr, DisplayID)
+
 
 class Dozenten_Table(Table):
     def __init__(self):

@@ -29,7 +29,13 @@ class DisplayData:
         queryResult = self.localDb.cursor.fetchall()
         # printSQL(sqlQuery, queryResult)
         self.room = Raum.fromQuery(queryResult)
-        print(self.room.__dict__)
 
         # dozenten
         sqlQuery = """SELECT * FROM Dozenten WHERE Dozenten.DisplayID={}""".format(displayId)
+        self.localDb.cursor.execute(sqlQuery)
+        queryResult = self.localDb.cursor.fetchall()
+        for hit in queryResult:
+            printSQL(sqlQuery, [hit])
+            self.dozenten.append(Dozent.fromQuery([hit]))
+
+        ...
