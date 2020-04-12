@@ -54,11 +54,13 @@ class MyScreen(tk.Frame):
         print(timeStamp(), "Button {} Pressed".format(self.name))
 
 
-class Header(tk.Frame):
+class Header(tk.Canvas):
     def __init__(self, master, **kw):
         tk.Frame.__init__(self, master=master, **kw)
         print(tk.Frame.winfo_width(self))
         print(tk.Frame.winfo_height(self))
+
+        
 
 
 class MySpecialScreen(MyScreen):
@@ -146,12 +148,14 @@ class MainApplication:
             EXITBUTTON = tk.Button(self.root,
                                    bg="grey",
                                    text="App beenden",
-                                   command=self.buttenEndPress).place(anchor=tk.NE, x=self.config_screenWidth, y=0)
+                                   command=self.buttenEndPress)
+            EXITBUTTON.place(anchor=tk.NE, x=self.config_screenWidth, y=0)
             REFRESHBUTTON = tk.Button(bg="grey",
                                       text="Refresh",
-                                      command=self.refreshRoutine).place(anchor=tk.SE, x=self.config_screenWidth,
+                                      command=self.refreshRoutine)
+            REFRESHBUTTON.place(anchor=tk.SE, x=self.config_screenWidth,
                                                                          y=self.config_screenHeight)
-
+            
         self.teststate = 'None'
 
     def runMainLoop(self):
