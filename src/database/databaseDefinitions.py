@@ -118,6 +118,11 @@ class Kalender:
                     self.RaumID)
         return sql
 
+    @staticmethod
+    def fromQuery(queryResult):
+        (ID, WochentagTag, StartUhrzeit, Endurzeit, Ereignis, RaumID) = queryResult[0]
+        return Kalender(ID, WochentagTag, StartUhrzeit, Endurzeit, Ereignis, RaumID)
+
 
 class Kalender_Table(Table):
     def __init__(self):
@@ -216,6 +221,11 @@ class Information:
                     self.AnzeigeDauer,
                     self.DozID)
         return sql
+
+    @staticmethod
+    def fromQuery(sqlQuery):
+        (self.ID, self.InfoText, self.AnzeigeDauer, self.DozID) = sqlQuery[0]
+        return Information(self.ID, self.InfoText, self.AnzeigeDauer, self.DozID)
 
 
 class Informationen_Table(Table):

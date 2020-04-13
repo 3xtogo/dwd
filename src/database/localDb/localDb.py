@@ -111,14 +111,21 @@ class LocalDb:
                                   StartUhrzeit="'10:00'",
                                   Endurzeit="'11:30'",
                                   Ereignis="'iOOP'",
-                                  RaumID="'A127'"))
+                                  RaumID=1))
 
         self.addKalender(Kalender(ID=2,
                                   WochentagTag="'MO'",
                                   StartUhrzeit="'10:00'",
                                   Endurzeit="'11:30'",
                                   Ereignis="'iOOP'",
-                                  RaumID="'A127'"))
+                                  RaumID=1))
+
+        self.addKalender(Kalender(ID=3,
+                                  WochentagTag="'Do'",
+                                  StartUhrzeit="'11:00'",
+                                  Endurzeit="'11:31'",
+                                  Ereignis="'paralellOOP'",
+                                  RaumID=2))
 
         self.addRaum(Raum(1, "'A127'", "'Büro'", 3, "'A1'", "'ING'", "'U&D'"))
         self.addRaum(Raum(2, "'A123'", "'Seminar'", 3, "'A1'", "'ING'", "'U&D'"))

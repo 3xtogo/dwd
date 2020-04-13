@@ -12,11 +12,14 @@ class DisplayData:
         self.display: Display = None
         self.room: Raum = None
         self.dozenten: List[Dozent] = []
-
+        self.kalenders: list[Kalender] = []
+        self.infos: list[Information] = []
         self.fetchFromLocalDb(displayId)
 
     def fetchFromLocalDb(self, displayId):
         print('All tables:', self.localDb.listTables())
+
+        # todo: handle lists not empty !
 
         # display
         sqlQuery = """SELECT * FROM Display WHERE Display.ID={}""".format(displayId)
@@ -37,7 +40,25 @@ class DisplayData:
         self.localDb.cursor.execute(sqlQuery)
         queryResult = self.localDb.cursor.fetchall()
         for hit in queryResult:
-            printSQL(sqlQuery, [hit])
+            # printSQL(sqlQuery, [hit])
             self.dozenten.append(Dozent.fromQuery([hit]))
 
-        ...
+        # kalender
+        sqlQuery = """SELECT * FROM Kalender WHERE Kalender.RaumID={}""".format(self.display.RaumID)
+        self.localDb.cursor.execute(sqlQuery)
+        queryResult = self.localDb.cursor.fetchall()
+        # printSQL(sqlQuery, queryResult)
+        for hit in queryResult:
+            # printSQL(sqlQuery, [hit])
+            self.kalenders.append(Kalender.fromQuery([hit]))
+
+        # information
+
+        for dozent in self.dozenten:
+            # print(dozent.ID, dozent.E_Mail, dozent.StudIP_Link, dozent.Telefonnummer)
+            sqlQuery = """SELECT * FROM Informationen WHERE Informationen.DozID={}""".format(dozent.ID)
+            self.localDb.cursor.execute(sqlQuery)
+            queryResult = self.localDb.cursor.fetchall()
+            # printSQL(sqlQuery, queryResult)
+            for hit in queryResult:
+                self.infos.append(Information.fromQuery([hit]))
