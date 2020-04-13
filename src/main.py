@@ -58,14 +58,25 @@ class Header(tk.Canvas):
     def __init__(self, master, **kw):
         tk.Canvas.__init__(self, master=master, **kw)
         self.master = master
-        headerFont = ("Helvetica", 16)
+        headerFontSmall = ("Helvetica", 16)
+        headerFontBig = ("Helvetica", 36)
         self.clockStrVar = tk.StringVar()
-        # self.updateTime()
-        self.lab = tk.Label(master=master, textvariable=self.clockStrVar, font=headerFont)
-        self.lab.place(anchor=tk.CENTER, x=int(kw.get('width') / 2), y=int(kw.get('height') / 2))
+        self.dateTimeLabel = tk.Label(master=master, textvariable=self.clockStrVar, font=headerFontSmall)
+        self.dateTimeLabel.place(anchor=tk.NE, x=kw.get('width'), y=0)  # x=int(kw.get('width') / 2), y=int(kw.get('height') / 2))
+
+        self.roomNameStrVar = tk.StringVar()
+        self.roomNameLabel = tk.Label(master=master, textvariable=self.roomNameStrVar, font=headerFontBig)
+        self.roomNameLabel.place(anchor=tk.NW, x=0, y=0)
+        self.studienbereichStrVar = tk.StringVar()
+        self.studienbereichLabel = tk.Label(master=master, textvariable=self.studienbereichStrVar, font=headerFontSmall)
+        self.studienbereichLabel.place(anchor=tk.SE, x=kw.get('width'), y=kw.get('height'))
 
     def updateTime(self):
         self.clockStrVar.set(cTime())
+
+    def setDynamicContent(self, d: DisplayData):
+        self.roomNameStrVar.set(d.room.Gebaeude + '-' + d.room.Bezeichnung)
+        self.studienbereichStrVar.set('Fachbereich: ' + d.room.Fachbereich + '\nStudienbereich: ' + d.room.Studienbereich)
 
 
 class MySpecialScreen(MyScreen):
@@ -166,18 +177,26 @@ class MainApplication:
 
         self.teststate = 'None'
 
+    def updateDynamicContent(self):
+        self.header.setDynamicContent(self.displayData)
 
     def timeLoop(self):
         self.header.updateTime()
-        print(timeStamp(), 'update')
+        # print(timeStamp(), 'updated time label')
         self.root.after(1000, self.timeLoop)
 
-    def runMainLoop(self):
-        # run main
+    def startApplication(self):
+        # get dynamicContentFromDb and set content
+        self.updateDynamicContent()
+
+        # run clock loop
+        self.timeLoop()
         self.root.mainloop()  # buttons active
 
     def refreshRoutine(self):
+        self.updateDynamicContent()
 
+        # this is just for test
         self.makeInfoBlue()
 
     def makeInfoBlue(self):
@@ -205,9 +224,7 @@ if __name__ == '__main__':
         displayId=1
     )
 
-    wnd.timeLoop()
-
-    wnd.runMainLoop()
+    wnd.startApplication()
 
     # todo: anzeige screen1
 

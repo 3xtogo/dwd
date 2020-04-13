@@ -126,9 +126,10 @@ class LocalDb:
         self.addDisplay(Display(1, 1, """'{"bar":1}'"""))  # display 1 points to room 1
         self.addDisplay(Display(2, 2, """'{"foo":2}'"""))  # display 2 points to room 2
 
-        self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))
-        self.addInformationen(Information(2, "'Das ist die zweite Nachricht'", "'3.5h'", 1))
-
+        self.addInformationen(Information(1, "'Das ist die erste Nachricht'", "'1h'", 1))  # last param is dozID
+        self.addInformationen(Information(2, "'Das ist die zweite Nachricht'", "'3.5h'", 1))  # last param is dozID
+        self.addInformationen(Information(3, "'Das ist die zweite Nachricht'", "'3.3h'", 2))
+        self.addInformationen(Information(4, "'Das ist die zweite Nachricht'", "'3.1h'", 2))
         pass
 
 

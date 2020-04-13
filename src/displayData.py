@@ -1,15 +1,17 @@
 from database.localDb.localDb import LocalDb
 from helperFunctions import printSQL
 from database.databaseDefinitions import *
+from typing import List, Set, Dict, Tuple, Optional
 
 
 class DisplayData:
+    # noinspection PyTypeChecker
     def __init__(self, displayId):
         self.localDb = LocalDb()
 
-        self.display = None
-        self.room = None
-        self.dozenten = []
+        self.display: Display = None
+        self.room: Raum = None
+        self.dozenten: List[Dozent] = []
 
         self.fetchFromLocalDb(displayId)
 
