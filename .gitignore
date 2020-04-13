@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 /doku/
 /src/database/localDb/localDatabase.db
+/.vscode/
