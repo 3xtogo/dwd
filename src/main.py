@@ -1,4 +1,4 @@
-from helperFunctions import timeStamp
+from helperFunctions import timeStamp, cTime
 from displayData import DisplayData
 
 import tkinter as tk
@@ -56,11 +56,16 @@ class MyScreen(tk.Frame):
 
 class Header(tk.Canvas):
     def __init__(self, master, **kw):
-        tk.Frame.__init__(self, master=master, **kw)
-        print(tk.Frame.winfo_width(self))
-        print(tk.Frame.winfo_height(self))
+        tk.Canvas.__init__(self, master=master, **kw)
+        self.master = master
+        headerFont = ("Helvetica", 16)
+        self.clockStrVar = tk.StringVar()
+        # self.updateTime()
+        self.lab = tk.Label(master=master, textvariable=self.clockStrVar, font=headerFont)
+        self.lab.place(anchor=tk.CENTER, x=int(kw.get('width') / 2), y=int(kw.get('height') / 2))
 
-        
+    def updateTime(self):
+        self.clockStrVar.set(cTime())
 
 
 class MySpecialScreen(MyScreen):
@@ -75,7 +80,7 @@ class MainApplication:
 
         # some updateLocalDb
         self.displayData = DisplayData(self.displayId)
-        #self.displayData.fetchFromLocalDb()
+        # self.displayData.fetchFromLocalDb()
 
         # configs
         self.config_screenHeight = kwargs.get('screenHeight')
@@ -122,6 +127,9 @@ class MainApplication:
             self.root.config(cursor="none")
 
         ## WIDGETS
+        self.header = Header(master=self.root, height=headerHeight, width=headerWidth, bg='white')
+        self.header.place(x=0, y=0, anchor=tk.NW)
+
         # self.mainBackground = tk.Label(self.root, width=screenWidth, height=screenHeight, bg="black")
         # self.mainBackground.place(anchor=tk.NW, x=0, y=0)
 
@@ -154,9 +162,15 @@ class MainApplication:
                                       text="Refresh",
                                       command=self.refreshRoutine)
             REFRESHBUTTON.place(anchor=tk.SE, x=self.config_screenWidth,
-                                                                         y=self.config_screenHeight)
-            
+                                y=self.config_screenHeight)
+
         self.teststate = 'None'
+
+
+    def timeLoop(self):
+        self.header.updateTime()
+        print(timeStamp(), 'update')
+        self.root.after(1000, self.timeLoop)
 
     def runMainLoop(self):
         # run main
@@ -190,6 +204,8 @@ if __name__ == '__main__':
         title='Demo',
         displayId=1
     )
+
+    wnd.timeLoop()
 
     wnd.runMainLoop()
 

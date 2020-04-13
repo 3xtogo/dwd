@@ -9,3 +9,8 @@ def printSQL(query, result):
 
 def timeStamp():
     return '[{}]'.format(datetime.datetime.now())
+
+
+def cTime():
+    date = '{}'.format(datetime.datetime.now().ctime())
+    return date
