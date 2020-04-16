@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" Autor: 3xtogo
+    Status: Development
+    Description: local Database class
+"""
+
 import sqlite3
 import os
 from database.databaseDefinitions import *

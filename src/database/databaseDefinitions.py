@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" Autor: 3xtogo
+    Status: Development
+    Description: Definition for Database Charts and Objects related to tablecolums
+"""
+
 from typing import List
 
 

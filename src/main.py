@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" Autor: 3xtogo
+    Status: Development
+    Description: Main Application
+"""
+
 from helperFunctions import timeStamp, cTime
 from displayData import DisplayData
 from database.databaseDefinitions import *

@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" Autor: 3xtogo
+    Status: Development
+    Description: to load data from database into a nice oop class DisplayData...
+"""
+
 from database.localDb.localDb import LocalDb
 from helperFunctions import printSQL
 from database.databaseDefinitions import *

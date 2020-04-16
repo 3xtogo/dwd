@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" Autor: 3xtogo
+    Status: Development
+    Description: contains helpful functions...
+"""
+
 import datetime
 
 
