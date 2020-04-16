@@ -1,6 +1,7 @@
 from helperFunctions import timeStamp, cTime
 from displayData import DisplayData
-
+from database.databaseDefinitions import *
+from typing import List
 import tkinter as tk
 from PIL import Image, ImageTk
 
@@ -12,46 +13,6 @@ class PicturePath:
     infoGreen = r"assets/infoGreen.png"
     infoRed = r"assets/infoRed.png"
     kalendar = r"assets/kalendar.png"
-
-
-class MyScreen(tk.Frame):
-
-    def __init__(self, master, name, displayWidth, displayHeight, buttonHeight, buttonWidth, headerWidth, headerHeight, buttonIndex, picPath, **kw):
-        tk.Frame.__init__(self, master=master, **kw)
-
-        self.name = name
-
-        self.tkCanv_buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
-                                             bg='white',
-                                             # bg=kw.get('bg')
-                                             )
-        self.tkCanv_buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
-        self.tkCanv_buttonCanvas.bind('<Button-1>', self.buttonPress)
-
-        self.buttonWidth = buttonWidth
-        self.buttonHeight = buttonHeight
-
-        self.buttonPath = None
-        self.buttonImage = None
-        self.updateButtonPicture(picPath)
-
-        self.tkCanv_leftscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='red')
-        self.tkCanv_rightscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='green')
-
-        self.tkCanv_leftscreen.place(anchor=tk.NW, x=0, y=0)
-        self.tkCanv_rightscreen.place(anchor=tk.NW, x=int(displayWidth / 2), y=0)
-
-    def updateButtonPicture(self, picturePath):
-        self.buttonPath = picturePath
-        self.buttonImage = Image.open(picturePath)
-        self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
-        self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
-        self.tkCanv_buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER,
-                                              image=self.buttonImage)
-
-    def buttonPress(self, ev):
-        self.tkraise()
-        print(timeStamp(), "Button {} Pressed".format(self.name))
 
 
 class Header(tk.Canvas):
@@ -79,10 +40,152 @@ class Header(tk.Canvas):
         self.studienbereichStrVar.set('Fachbereich: ' + d.room.Fachbereich + '\nStudienbereich: ' + d.room.Studienbereich)
 
 
-class MySpecialScreen(MyScreen):
+class MyScreen(tk.Frame):
 
+    def __init__(self, master, name, displayWidth, displayHeight, buttonHeight, buttonWidth, headerWidth, headerHeight, buttonIndex, picPath, **kw):
+        tk.Frame.__init__(self, master=master, **kw)
+
+        self._fontBig = ("Helvetica", 36)
+        self._fontSmall = ("Helvetica", 16)
+
+        self.name = name
+
+        self.tkCanv_buttonCanvas = tk.Canvas(master=master, height=buttonHeight, width=buttonWidth,
+                                             bg='white',
+                                             # bg=kw.get('bg')
+                                             )
+        self.tkCanv_buttonCanvas.place(anchor=tk.NW, x=headerWidth, y=buttonIndex * buttonHeight)
+        self.tkCanv_buttonCanvas.bind('<Button-1>', self.buttonPress)
+
+        self.buttonWidth = buttonWidth
+        self.buttonHeight = buttonHeight
+
+        self.buttonPath = None
+        self.buttonImage = None
+        self.updateButtonPicture(picPath)
+
+        self.tkCanv_leftscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='white')
+        self.tkCanv_rightscreen = tk.Canvas(master=self, height=displayHeight, width=int(displayWidth / 2), bg='white')
+
+        self.tkCanv_leftscreen.place(anchor=tk.NW, x=0, y=0)
+        self.tkCanv_rightscreen.place(anchor=tk.NW, x=int(displayWidth / 2), y=0)
+
+        self.mainLable = tk.Label(master=self, font=self._fontBig)
+        self.mainLable.place(x=0, y=0, anchor=tk.NW)
+
+    def updateButtonPicture(self, picturePath):
+        self.buttonPath = picturePath
+        self.buttonImage = Image.open(picturePath)
+        self.buttonImage = self.buttonImage.resize((100, 100), Image.ANTIALIAS)
+        self.buttonImage = ImageTk.PhotoImage(self.buttonImage)
+        self.tkCanv_buttonCanvas.create_image(self.buttonWidth / 2, self.buttonHeight / 2, anchor=tk.CENTER,
+                                              image=self.buttonImage)
+
+    def buttonPress(self, ev):
+        self.tkraise()
+        print(timeStamp(), "Button {} Pressed".format(self.name))
+
+
+class HomeScreen(MyScreen):
     def __init__(self, master, name, **kw):
         MyScreen.__init__(self, master=master, name=name, **kw)
+        self.mainLable.config(text="Home")
+
+        self.dozenten: List[Dozent] = []
+        self.buttons = []
+
+    def optionButtonPressed(self, ev):
+        for idx, button in enumerate(self.buttons):
+            if button == ev.widget:
+                print(ev, "was pressed", self.dozenten[idx].Nachname, 'will be printed')
+                self.tkCanv_rightscreen.delete("all")
+                doz = self.dozenten[idx]
+                self.tkCanv_rightscreen.create_text(10, 0, font=self._fontSmall, anchor=tk.NW, text="{} {}\nE-Mail:\n{}\nTelefonnummer:\n{}\nStudip-Link:\n{}\nSprechzeiten:\n{}\n<Bild></Bild>".
+                                                    format(doz.Vorname, doz.Nachname, doz.E_Mail, doz.Telefonnummer, doz.StudIP_Link, doz.Sprechzeiten))
+        ...
+
+    def showDefault(self):
+        pass
+
+    def loadData(self, displayData: DisplayData):
+        self.dozenten = displayData.dozenten
+        self.buttons = []
+        maxInd = len(self.dozenten) - 1
+        for dozent in self.dozenten:
+            self.buttons.append(tk.Label(master=self, text=dozent.Nachname, font=self._fontSmall))
+            self.buttons[-1].place(anchor=tk.NW, x=0, y=len(self.buttons) * int(110 / maxInd) + 20)  # todo spacing
+        ...
+
+        for button in self.buttons:
+            button.bind('<Button-1>', self.optionButtonPressed)
+
+
+class CalendarScreen(MyScreen):
+    def __init__(self, master, name, **kw):
+        MyScreen.__init__(self, master=master, name=name, **kw)
+        self.mainLable.config(text="Kalender")
+
+        self.kalenderEintraege: List[Kalender] = []
+        self.buttons = []
+
+    def optionButtonPressed(self, ev):
+        for idx, button in enumerate(self.buttons):
+            if button == ev.widget:
+                print(ev, "was pressed Start:", self.kalenderEintraege[idx].StartUhrzeit, 'will be printed')
+                self.tkCanv_rightscreen.delete("all")
+                kal = self.kalenderEintraege[idx]
+                self.tkCanv_rightscreen.create_text(10, 0, font=self._fontSmall, anchor=tk.NW, text="Kalenderereignis ID={}\nWochentag:{}\nStartuhrzeit: {}\nEnduhrzeit: {}\nEreignis: {}".
+                                                    format(kal.ID, kal.WochentagTag, kal.StartUhrzeit, kal.Endurzeit, kal.Ereignis))
+        ...
+
+    def showDefault(self):
+        pass
+
+    def loadData(self, displayData: DisplayData):
+        self.kalenderEintraege = displayData.kalenders
+        self.buttons = []
+        maxInd = len(self.kalenderEintraege) - 1
+        for kalender in self.kalenderEintraege:
+            self.buttons.append(tk.Label(master=self, text=kalender.Ereignis, font=self._fontSmall))
+            self.buttons[-1].place(anchor=tk.NW, x=0, y=len(self.buttons) * int(110 / maxInd) + 20)  # todo spacing
+        ...
+
+        for button in self.buttons:
+            button.bind('<Button-1>', self.optionButtonPressed)
+
+
+class InfoScreen(MyScreen):
+    def __init__(self, master, name, **kw):
+        MyScreen.__init__(self, master=master, name=name, **kw)
+        self.mainLable.config(text="Info")
+
+        self.info: List[Information] = []
+        self.buttons = []
+
+    def optionButtonPressed(self, ev):
+        for idx, button in enumerate(self.buttons):
+            if button == ev.widget:
+                print(ev, "was pressed", self.info[idx].InfoText, 'will be printed')
+                self.tkCanv_rightscreen.delete("all")
+                inf = self.info[idx]
+                self.tkCanv_rightscreen.create_text(10, 0, font=self._fontSmall, anchor=tk.NW, text="inf.ID:{}\ninf.AnzeigeDauer:{}\ninf.DozID:{}\ninf.InfoText:\n".
+                                                    format(inf.ID, inf.AnzeigeDauer, inf.DozID, inf.InfoText))
+        ...
+
+    def showDefault(self):
+        pass
+
+    def loadData(self, displayData: DisplayData):
+        self.info = displayData.infos
+        self.buttons = []
+        maxInd = len(self.info) - 1
+        for inf in self.info:
+            self.buttons.append(tk.Label(master=self, text=inf.InfoText, font=self._fontSmall))
+            self.buttons[-1].place(anchor=tk.NW, x=0, y=len(self.buttons) * int(110 / maxInd) + 20)  # todo spacing
+        ...
+
+        for button in self.buttons:
+            button.bind('<Button-1>', self.optionButtonPressed)
 
 
 class MainApplication:
@@ -146,22 +249,22 @@ class MainApplication:
 
         # self.buttonBackground = tk.Label(self.root, width=buttonWidth, height=screenHeight, bg="white")
         # self.buttonBackground.place(anchor=tk.NW, x=headerWidth, y=0)
-        self.screen1 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
-                                picPath=PicturePath.home, bg='red',
-                                name='Screen1')
-        self.screen2 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
-                                picPath=PicturePath.kalendar, bg='yellow',
-                                name='Screen2')
-        self.screen3 = MyScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
-                                buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayWidth,
-                                picPath=PicturePath.info, bg='green',
-                                name='Screen3')
+        self.homeScreen = HomeScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                     buttonWidth=buttonWidth, buttonIndex=0, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
+                                     picPath=PicturePath.home, bg='red',
+                                     name='Screen1')
+        self.calendarScreen = CalendarScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                             buttonWidth=buttonWidth, buttonIndex=1, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayHeight,
+                                             picPath=PicturePath.kalendar, bg='yellow',
+                                             name='Screen2')
+        self.infoScreen = InfoScreen(master=self.root, height=displayHeight, width=displayWidth, buttonHeight=buttonHeight,
+                                     buttonWidth=buttonWidth, buttonIndex=2, headerWidth=headerWidth, headerHeight=headerHeight, displayWidth=displayWidth, displayHeight=displayWidth,
+                                     picPath=PicturePath.info, bg='green',
+                                     name='Screen3')
 
-        self.screen1.place(anchor=tk.NW, x=0, y=headerHeight)
-        self.screen2.place(anchor=tk.NW, x=0, y=headerHeight)
-        self.screen3.place(anchor=tk.NW, x=0, y=headerHeight)
+        self.homeScreen.place(anchor=tk.NW, x=0, y=headerHeight)
+        self.calendarScreen.place(anchor=tk.NW, x=0, y=headerHeight)
+        self.infoScreen.place(anchor=tk.NW, x=0, y=headerHeight)
 
         if self.config_showExitButton:
             EXITBUTTON = tk.Button(self.root,
@@ -177,8 +280,13 @@ class MainApplication:
 
         self.teststate = 'None'
 
+        self.homeScreen.buttonPress(None)
+
     def updateDynamicContent(self):
         self.header.setDynamicContent(self.displayData)
+        self.homeScreen.loadData(self.displayData)
+        self.calendarScreen.loadData(self.displayData)
+        self.infoScreen.loadData(self.displayData)
 
     def timeLoop(self):
         self.header.updateTime()
@@ -201,10 +309,10 @@ class MainApplication:
 
     def makeInfoBlue(self):
         if self.teststate == 'None':
-            self.screen3.updateButtonPicture(PicturePath.infoRed)
+            self.infoScreen.updateButtonPicture(PicturePath.infoRed)
             self.teststate = 'Red'
         else:
-            self.screen3.updateButtonPicture(PicturePath.infoGreen)
+            self.infoScreen.updateButtonPicture(PicturePath.infoGreen)
             self.teststate = 'None'
 
     def buttenEndPress(self):
@@ -227,15 +335,8 @@ if __name__ == '__main__':
     wnd.startApplication()
 
     # todo: anzeige screen1
-
     # todo: anzeige screen2
-
     # todo: anzeige screen3
-
-    # todo: a clock with tk.Stringvar in a canvas and self.root.after(1000, self.TimeUpdate())
-
-    # todo: update displayData from local db when a certain when the database has new content
-
-    # todo: server db
-
+    # todo: update displayData from local db when the database has new content
+    # todo: server db ?
     # todo screen that can access the db and change entries (cmdline first)

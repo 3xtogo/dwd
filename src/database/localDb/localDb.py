@@ -78,7 +78,7 @@ class LocalDb:
     def exampleData(self):
         self.addDozent(Dozent(ID=1,
                               Vorname="'Visar'",
-                              Nachname="'Jauzaj'",
+                              Nachname="'Januzaj'",
                               Sprechzeiten="'Fr_10_00_12_00'",
                               E_Mail="'visar.januzaj@hs-rm.de'",
                               Telefonnummer="'0160123456'",
@@ -87,8 +87,8 @@ class LocalDb:
                               DisplayID=1))
 
         self.addDozent(Dozent(ID=2,
-                              Vorname="'Zinnen'",
-                              Nachname="'Andreas'",
+                              Vorname="'Andreas'",
+                              Nachname="'Zinnen'",
                               Sprechzeiten="'Di_10_00_12_00'",
                               E_Mail="'andreas.zinnen@hs-rm.de'",
                               Telefonnummer="'0160123465'",

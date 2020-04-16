@@ -224,8 +224,8 @@ class Information:
 
     @staticmethod
     def fromQuery(sqlQuery):
-        (self.ID, self.InfoText, self.AnzeigeDauer, self.DozID) = sqlQuery[0]
-        return Information(self.ID, self.InfoText, self.AnzeigeDauer, self.DozID)
+        (ID, InfoText, AnzeigeDauer, DozID) = sqlQuery[0]
+        return Information(ID, InfoText, AnzeigeDauer, DozID)
 
 
 class Informationen_Table(Table):
